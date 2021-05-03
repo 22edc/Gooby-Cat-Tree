@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
+	name: "The Giga Gamer Tree",
+	id: "gigagodmod",
+	author: "The Chad",
+	pointsName: "Wealth",
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
@@ -12,8 +12,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.01",
+	name: "the begining",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
