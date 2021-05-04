@@ -75,6 +75,13 @@ addLayer("p", {
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
         },
+         21: {
+            description: "THE FIRST UPGRADE!!!",
+            cost: new Decimal(1),
+            effect() { return (1)
+            },
+            effectDisplay() { return format(this.effect())+"+" }, // Add formatting to the effect
+        },
     },
     buyables: {
         11: {
