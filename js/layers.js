@@ -15,6 +15,10 @@ addLayer("p", {
     exponent: 0.5, // Prestige currency exponent  
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade("g", 11)) mult = mult.times(upgradeEffect("g", 11))
+		if (hasUpgrade("g", 12)) mult = mult.times(upgradeEffect("g", 12))
+		if (hasUpgrade("g", 13)) mult = mult.times(upgradeEffect("g", 13))
+		if (hasUpgrade("g", 14)) mult = mult.times(upgradeEffect("g", 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -40,6 +44,9 @@ addLayer("p", {
                 return ret;
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            unlocked() {
+                return hasUpgrade("p", 11)
+            }
         },
         15: {
             description: "boner pill",
@@ -47,6 +54,9 @@ addLayer("p", {
             effect() { return (42)
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            unlocked() {
+                return hasUpgrade("p", 14)
+            }
         },
         16: {
             description: "a second pill",
@@ -54,6 +64,9 @@ addLayer("p", {
             effect() { return (6.9)
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            unlocked() {
+                return hasUpgrade("p", 15)
+            }
         },
         13: {
             description: "boner pill",
@@ -61,6 +74,9 @@ addLayer("p", {
             effect() { return (42)
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            unlocked() {
+                return hasUpgrade("p", 12)
+            }
         },
         14: {
             description: "a second pill",
@@ -68,11 +84,15 @@ addLayer("p", {
             effect() { return (6.9)
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            unlocked() {
+                return hasUpgrade("p", 13)
+            }
         },
     },
     buyables: {
         11: {
             title: "Exhancers", // Optional, displayed at the top in a larger font
+
             cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
                 if (x.gte(25)) x = x.pow(2).div(25)
                 let cost = Decimal.pow(2, x.pow(1.5))
@@ -143,10 +163,13 @@ addLayer("g", {
     symbol: "G", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     color: "#4BDC13",
+    branches() {
+        return ["p"]
+    },
     requires: new Decimal(1000), // Can be a function that takes requirement increases into account
     resource: "gamer bucks", // Name of prestige currency
     baseResource: "prestige points", // Name of resource prestige is based on
@@ -168,10 +191,20 @@ addLayer("g", {
             done() {return player[this.layer].best.gte(10)}, // Used to determine when to give the milestone
             effectDescription: "keep presitge upgrades on reset",
         },
+        1: {
+            requirementDescription: "1 exponent",
+            effectDescription: "Gain 10% of your basic point gain per second.",
+            done(){
+                if (player["g"].points >= 1) {return true}else{return false}
+            },
+            unlocked(){
+                if(player["g"].points>=0){return true}
+            },
+        },
     },
     upgrades: {
         11: {
-            description: "Point generation go brrrr",
+            description: "Points and pp go uppp!!",
             cost: new Decimal(1),
             effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
                 let ret = player[this.layer].points.add(1).pow(player[this.layer].upgrades.includes(24)?1.1:(player[this.layer].upgrades.includes(14)?0.75:0.5)) 
@@ -181,7 +214,7 @@ addLayer("g", {
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
         },
         12: {
-            description: "points go even zoomer",
+            description: "points get even bigg (also pp i guess)",
             cost: new Decimal(10),
             effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
                 let ret = player[this.layer].points.add(1).pow(player[this.layer].upgrades.includes(24)?1.1:(player[this.layer].upgrades.includes(14)?0.75:0.5)) 
@@ -191,14 +224,14 @@ addLayer("g", {
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
         },
         13: {
-            description: "boner pill",
+            description: "boner pill best pill!",
             cost: new Decimal(6900),
             effect() { return (42)
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
         },
         14: {
-            description: "a second pill multiplies points and gamer bucks earnings!! noice!!",
+            description: "a second pill multiplies points, pp, and gamer bucks earnings!! noice!!",
             cost: new Decimal(42000),
             effect() { return (6.9)
             },
@@ -217,10 +250,17 @@ addLayer("d", {
     symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked:false,
 		points: new Decimal(0),
-    }},
+    }},      
+    layerShown() {
+        if(player.g.points>=1e9) return true ; else{return false}
+        
+     },         
     color: "#FFC0CB",
+    branches() {
+        return ["g"]
+    },
     requires: new Decimal(1e10), // Can be a function that takes requirement increases into account
     resource: "Pops", // Name of prestige currency
     baseResource: "gamer bucks", // Name of resource prestige is based on
