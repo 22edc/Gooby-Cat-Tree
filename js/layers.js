@@ -157,6 +157,7 @@ addLayer("p", {
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true}
+ 
 })
 addLayer("g", {
     name: "gamerpoint", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -195,7 +196,7 @@ addLayer("g", {
             requirementDescription: "1 exponent",
             effectDescription: "Gain 10% of your basic point gain per second.",
             done(){
-                if (player["g"].points >= 1) {return true}else{return false}
+                if (player["g"].points >= 100) {return true}else{return false}
             },
             unlocked(){
                 if(player["g"].points>=0){return true}
