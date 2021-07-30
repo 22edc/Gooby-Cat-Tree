@@ -153,11 +153,20 @@ addLayer("p", {
         },
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
+    passiveGeneration() { return hasMilestone("g", 1) ? 1 : 0 },
+    automation() {
+		if (hasMilestone("g", 2)) {
+			buyBuyable("p", 11);
+			buyBuyable("p", 12);
+		}
+	},
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+   
+
+   
     layerShown(){return true}
- 
 })
 addLayer("g", {
     name: "gamerpoint", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -201,6 +210,11 @@ addLayer("g", {
             unlocked(){
                 if(player["g"].points>=0){return true}
             },
+        },
+        2: {
+            requirementDescription: "10000 game men",
+            done() {return player[this.layer].best.gte(10000)}, // Used to determine when to give the milestone
+            effectDescription: "auto buy the P buyables",
         },
     },
     upgrades: {
