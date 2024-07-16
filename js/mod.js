@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "Goob Cat Tree",
-	id: "goobyCats",
+	id: "goobyCatz",
 	author: "nobody",
 	pointsName: "$",
 	modFiles: ["layers.js", "tree.js"],
@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.01",
+	num: "0.02",
 	name: "the begining",
 }
 
@@ -44,7 +44,6 @@ function getPointGen() {
 		let gain = new Decimal(1)
 		if (hasUpgrade("p", 11)) gain = gain.times(upgradeEffect("p", 11))
 		if (hasUpgrade("p", 12)) gain = gain.times(upgradeEffect("p", 12))
-		if (hasUpgrade("p", 13)) gain = gain.times(upgradeEffect("p", 13))
 		if (hasUpgrade("p", 14)) gain = gain.times(upgradeEffect("p", 14))
 		if (hasUpgrade("p", 15)) gain = gain.times(upgradeEffect("p", 15))
 		if (hasUpgrade("p", 16)) gain = gain.times(upgradeEffect("p", 16))

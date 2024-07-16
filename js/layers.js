@@ -34,6 +34,56 @@ addLayer("p", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
+    tabFormat: {
+        "Upgrades": {
+            content: [
+                "main-display",
+                ["prestige-button"],
+                "blank",
+                ["display-text",
+                function() { if(hasUpgrade("p", 11)) 
+                        if(player[this.layer].buyables[11].add(upgradeEffect("p", 11)) != 1) return 'I have ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11))) + ' Gooby Cats'
+                            else return 'I have ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11))) + ' Gooby Cat'
+                    else 
+                        if(player[this.layer].buyables[11] != 1) return 'I have ' + format(player[this.layer].buyables[11]) + ' Gooby Cats'
+                            else return 'I have ' + format(player[this.layer].buyables[11]) + ' Gooby Cat'
+                 },
+                { "color": "green", "font-size": "24px", "font-family": "Comic Sans MS" }],
+                "blank",
+                "milestones",
+                "blank",
+                "blank",
+                "upgrades"],
+                },
+        "Buyables": {
+            content: [
+                "blank",
+                ["display-text",
+                function() { 
+                    mult = new Decimal(1)
+                    if (tmp["p"].buyables["13"].effect.first > 1) mult = mult.times(100).add(tmp["p"].buyables["13"].effect.first).div(100)
+                    if (tmp["p"].buyables["12"].effect.first > 1) mult = mult.times(Math.sqrt(tmp["p"].buyables["12"].effect.first))
+                    if(hasMilestone("p",0)) return 'Generating ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11)) * mult) + ' Gems per second'
+                    else return 'Generating 0 Gems poer second'
+         },
+         { "color": "green", "font-size": "24px", "font-family": "Comic Sans MS" }],
+                "blank",
+                ["display-text",
+                    function() { 
+                        return 'Goobys are generating ' + format(getPointGen()) + ' Dollars worth of Goo per second'
+             },
+             { "color": "green", "font-size": "24px", "font-family": "Comic Sans MS" }],
+                "blank",
+                "buyables",
+        
+        ],  
+        },
+        //"Milestones":{
+        //    content: ["milestones",]
+        //        
+        //},
+        
+    },
     upgrades: {
         11: {
             fullDisplay() { return "<h3>Original Gooby Cat</h3><br>Get Your First Cat<br><br>Cost: 10 Points" }, 
@@ -67,12 +117,12 @@ addLayer("p", {
         13: {
             description: "Unlock A Third Repeatable Upgrade",
             cost: new Decimal(10),
-            effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
-                let ret = player[this.layer].points.add(1).pow(player[this.layer].upgrades.includes(24)?1.1:(player[this.layer].upgrades.includes(14)?0.75:0.5)) 
-                if (ret.gte("1e10")) ret = ret.sqrt().times("1e5")
-                return ret;
-            },
-            effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            //effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
+            //    let ret = player[this.layer].points.add(1).pow(player[this.layer].upgrades.includes(24)?1.1:(player[this.layer].upgrades.includes(14)?0.75:0.5)) 
+            //    if (ret.gte("1e10")) ret = ret.sqrt().times("1e5")
+            //    return ret;
+            //},
+            //effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
             unlocked() {
                 return hasUpgrade("p", 12)
             }
@@ -152,7 +202,8 @@ addLayer("p", {
                 let data = tmp[this.layer].buyables[this.id]
                 return "Cost: " + format(data.cost) + " Gems\n\
                 Amount: " + player[this.layer].buyables[this.id] + "\n\
-                Bigger and Better Also Multiplies Points by " + format(data.effect.first)
+                Multiplies Goo Value by " + format(data.effect.first) +"\n\
+                And Gem Productiuon by " + format(Math.sqrt(tmp["p"].buyables["12"].effect.first))
             },
             unlocked() { return player[this.layer].unlocked }, 
             canAfford() {
@@ -201,7 +252,7 @@ addLayer("p", {
     milestones: {
         0: {
             requirementDescription: "1 Gooby Cat",
-            effectDescription: "Begin ton Generate Gems",
+            effectDescription: "Begin to Generate Gems",
             done() { return tmp["p"].buyables["11"].effect.first >= 1 }
         },
     },
@@ -210,6 +261,7 @@ addLayer("p", {
         mult = new Decimal(1)
         
         if (tmp["p"].buyables["13"].effect.first > 1) mult = mult.times(100).add(tmp["p"].buyables["13"].effect.first).div(100)
+        if (tmp["p"].buyables["12"].effect.first > 1) mult = mult.times(Math.sqrt(tmp["p"].buyables["12"].effect.first))
 
         if(hasMilestone("p",0)) return mult
                             else return 0},
@@ -237,7 +289,7 @@ addLayer("g", {
         unlocked: false,
 		points: new Decimal(0),
     }},
-    color: "#4BDC13",
+    color: "#966919",
     branches() {
         return ["p"]
     },
