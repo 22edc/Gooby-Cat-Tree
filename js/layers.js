@@ -19,10 +19,10 @@ addLayer("p", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         
-        if (hasUpgrade("g", 11)) mult = mult.times(upgradeEffect("g", 11))
-		if (hasUpgrade("g", 12)) mult = mult.times(upgradeEffect("g", 12))
-		if (hasUpgrade("g", 21)) mult = mult.times(upgradeEffect("g", 21))
-		if (hasUpgrade("g", 22)) mult = mult.times(upgradeEffect("g", 22))
+        if (hasUpgrade("f", 11)) mult = mult.times(upgradeEffect("f", 11))
+		if (hasUpgrade("f", 12)) mult = mult.times(upgradeEffect("f", 12))
+		if (hasUpgrade("f", 21)) mult = mult.times(upgradeEffect("f", 21))
+		if (hasUpgrade("f", 22)) mult = mult.times(upgradeEffect("f", 22))
         return mult
     },
     directMult() {
@@ -281,7 +281,7 @@ addLayer("p", {
    
     layerShown(){return true}
 })
-addLayer("g", {
+addLayer("f", {
     name: "Farm", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "F", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -318,10 +318,10 @@ addLayer("g", {
             requirementDescription: "1 exponent",
             effectDescription: "Gain 10% of your basic point gain per second.",
             done(){
-                if (player["g"].points >= 100) {return true}else{return false}
+                if (player["f"].points >= 100) {return true}else{return false}
             },
             unlocked(){
-                if(player["g"].points>=0){return true}
+                if(player["f"].points>=0){return true}
             },
         },
         2: {
@@ -376,26 +376,23 @@ addLayer("g", {
                     else return false
     }
 })
-addLayer("d", {
-    name: "dartmonke", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
+addLayer("r", {
+    name: "Research Center", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "R", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked:false,
 		points: new Decimal(0),
     }},      
     layerShown() {
-        if(player.g.points>=1e9) return true ; else{return false}
+        if(player.p.points>=100) return true ; else{return false}
         
      },         
     color: "#FFC0CB",
-    branches() {
-        return ["g"]
-    },
-    requires: new Decimal(1e10), // Can be a function that takes requirement increases into account
-    resource: "Pops", // Name of prestige currency
-    baseResource: "gamer bucks", // Name of resource prestige is based on
-    baseAmount() {return player.g.points}, // Get the current amount of baseResource
+    requires: new Decimal(1e4), // Can be a function that takes requirement increases into account
+    resource: "Theorys", // Name of prestige currency
+    baseResource: "gems", // Name of resource prestige is based on
+    baseAmount() {return player.p.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.125, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -407,7 +404,7 @@ addLayer("d", {
     },
     milestones: {
         0: {
-            requirementDescription: "10 pops",
+            requirementDescription: "10 Theorys",
             done() {return player[this.layer].best.gte(10)}, // Used to determine when to give the milestone
             effectDescription: "keep presitge upgrades on reset",
         },
@@ -448,9 +445,6 @@ addLayer("d", {
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
         },
     },
-    row: 2, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "d", description: "D: Reset for Dart monke pops", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
-    layerShown(){return false}
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    
 })

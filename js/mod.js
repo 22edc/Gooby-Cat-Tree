@@ -49,14 +49,10 @@ function getPointGen() {
 		if (hasUpgrade("p", 16)) gain = gain.times(upgradeEffect("p", 16))
 		if (tmp["p"].buyables["11"].effect.first > 1) gain = gain.times(tmp["p"].buyables["11"].effect.first)
 		if (tmp["p"].buyables["12"].effect.first > 1) gain = gain.times(tmp["p"].buyables["12"].effect.first)
-		if (hasUpgrade("g", 11)) gain = gain.times(upgradeEffect("g", 11))
-		if (hasUpgrade("g", 12)) gain = gain.times(upgradeEffect("g", 12))
-		if (hasUpgrade("g", 13)) gain = gain.times(upgradeEffect("g", 13))
-		if (hasUpgrade("g", 14)) gain = gain.times(upgradeEffect("g", 14))
-		if (hasUpgrade("d", 11)) gain = gain.times(upgradeEffect("d", 11))
-		if (hasUpgrade("d", 12)) gain = gain.times(upgradeEffect("d", 12))
-		if (hasUpgrade("d", 13)) gain = gain.times(upgradeEffect("d", 13))
-		if (hasUpgrade("d", 14)) gain = gain.times(upgradeEffect("d", 14))
+		if (hasUpgrade("f", 11)) gain = gain.times(upgradeEffect("f", 11))
+		if (hasUpgrade("f", 12)) gain = gain.times(upgradeEffect("f", 12))
+		if (hasUpgrade("f", 13)) gain = gain.times(upgradeEffect("f", 13))
+		if (hasUpgrade("f", 14)) gain = gain.times(upgradeEffect("f", 14))
 		return gain
 }
 
