@@ -13,6 +13,7 @@ addLayer("p", {
     baseResource: "Gooby Cats", // Name of resource prestige is based on
     baseAmount() {if(hasUpgrade("p", 11)) return player[this.layer].buyables[11].add(upgradeEffect("p", 11))
                     else return player[this.layer].buyables[11]
+        //return player.points
     }, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent  
@@ -41,13 +42,15 @@ addLayer("p", {
                 ["prestige-button"],
                 "blank",
                 ["display-text",
-                function() { if(hasUpgrade("p", 11)) 
-                        if(player[this.layer].buyables[11].add(upgradeEffect("p", 11)) != 1) return 'I have ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11))) + ' Gooby Cats'
+                    function () {
+                        if (hasUpgrade("p", 11))
+                            if(player[this.layer].buyables[11].add(upgradeEffect("p", 11)) != 1) return 'I have ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11))) + ' Gooby Cats'
                             else return 'I have ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11))) + ' Gooby Cat'
-                    else 
-                        if(player[this.layer].buyables[11] != 1) return 'I have ' + format(player[this.layer].buyables[11]) + ' Gooby Cats'
+                        else
+                            if(player[this.layer].buyables[11] != 1) return 'I have ' + format(player[this.layer].buyables[11]) + ' Gooby Cats'
                             else return 'I have ' + format(player[this.layer].buyables[11]) + ' Gooby Cat'
                  },
+//function () { return 'meow' },
                 { "color": "green", "font-size": "24px", "font-family": "Comic Sans MS" }],
                 "blank",
                 "milestones",
@@ -59,13 +62,14 @@ addLayer("p", {
             content: [
                 "blank",
                 ["display-text",
-                function() { 
+                function() {
                     mult = new Decimal(1)
                     if (tmp["p"].buyables["13"].effect.first > 1) mult = mult.times(100).add(tmp["p"].buyables["13"].effect.first).div(100)
                     if (tmp["p"].buyables["12"].effect.first > 1) mult = mult.times(Math.sqrt(tmp["p"].buyables["12"].effect.first))
                     if(hasMilestone("p",0)) return 'Generating ' + format(player[this.layer].buyables[11].add(upgradeEffect("p", 11)) * mult) + ' Gems per second'
-                    else return 'Generating 0 Gems poer second'
+                    else return 'Generating 0 Gems per second'
          },
+//function () { return 'meow' },
          { "color": "green", "font-size": "24px", "font-family": "Comic Sans MS" }],
                 "blank",
                 ["display-text",
@@ -152,7 +156,7 @@ addLayer("p", {
     buyables: {
         11: {
             title: "Gooby Cat", // Optional, displayed at the top in a larger font
-
+        
             cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
                 if (x.gte(20)) x = x.pow(2).div(25)
                     let cost = Decimal.add(10).times(Decimal.pow(1.1, x))
@@ -185,7 +189,7 @@ addLayer("p", {
             },
             style: {'height':'222px'},
         },
-         12: {
+        12: {
             title: "Faster Goobys", // Optional, displayed at the top in a larger font
             cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
                 if (x.gte(25)) x = x.pow(2).div(25)
@@ -218,11 +222,11 @@ addLayer("p", {
         },
         13: {
             title: "Gems are to Rare!!", // Optional, displayed at the top in a larger font
-
+        
             cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
                 if (x.gte(25)) x = x.pow(2).div(25)
                 let cost = Decimal.add(30).times(Decimal.pow(1.15, x))
-
+        
                 return cost.floor()
             },
             effect(x=player[this.layer].buyables[this.id]) { // Effects of owning x of the items, x is a decimal
@@ -259,20 +263,24 @@ addLayer("p", {
     row: 0, // Row the layer is in on the tree (0 is the first row)
     passiveGeneration() {   
         mult = new Decimal(1)
+        if (hasMilestone("p", 0)) {
+          if (tmp["p"].buyables["13"].effect.first > 1) mult = mult.times(100).add(tmp["p"].buyables["13"].effect.first).div(100)
+          if (tmp["p"].buyables["12"].effect.first > 1) mult = mult.times(Math.sqrt(tmp["p"].buyables["12"].effect.first))
+            return mult
+        }
+        else return 0
+    },
         
-        if (tmp["p"].buyables["13"].effect.first > 1) mult = mult.times(100).add(tmp["p"].buyables["13"].effect.first).div(100)
-        if (tmp["p"].buyables["12"].effect.first > 1) mult = mult.times(Math.sqrt(tmp["p"].buyables["12"].effect.first))
 
-        if(hasMilestone("p",0)) return mult
-                            else return 0},
 
-    automation() {
-		if (hasMilestone("g", 2)) {
-			buyBuyable("p", 11);
-			buyBuyable("p", 12);
-            buyBuyable("p", 13);
-		}
-	},
+
+    //automation() {
+	//	if (hasMilestone("g", 2)) {
+	//		buyBuyable("p", 11);
+	//		buyBuyable("p", 12);
+    //        buyBuyable("p", 13);
+	//	}
+	//},
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -367,14 +375,15 @@ addLayer("f", {
         },
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "g", description: "G: Reset for gamer! points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
+    //hotkeys: [
+    //    {key: "g", description: "G: Reset for gamer! points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    //],
 
-    layerShown() {  
-                    if(hasUpgrade("p", 14)) return true
-                    else return false
+    layerShown() {
+        if (hasUpgrade("p", 14)) return true
+        else return false
     }
+    
 })
 addLayer("r", {
     name: "Research Center", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -383,11 +392,12 @@ addLayer("r", {
     startData() { return {
         unlocked:false,
 		points: new Decimal(0),
-    }},      
+    }},
     layerShown() {
         if(player.p.points>=100) return true ; else{return false}
-        
-     },         
+
+     },
+      resetsNothing: true,
     color: "#FFC0CB",
     requires: new Decimal(1e4), // Can be a function that takes requirement increases into account
     resource: "Theorys", // Name of prestige currency

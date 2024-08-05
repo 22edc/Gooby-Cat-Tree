@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "Goob Cat Tree",
+	name: "Gooby Cat Tree",
 	id: "goobyCatz",
 	author: "nobody",
 	pointsName: "$",
@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.02",
-	name: "the begining",
+	num: "0.02b",
+	name: "actually a working game",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -41,19 +41,19 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-		let gain = new Decimal(1)
-		if (hasUpgrade("p", 11)) gain = gain.times(upgradeEffect("p", 11))
-		if (hasUpgrade("p", 12)) gain = gain.times(upgradeEffect("p", 12))
-		if (hasUpgrade("p", 14)) gain = gain.times(upgradeEffect("p", 14))
-		if (hasUpgrade("p", 15)) gain = gain.times(upgradeEffect("p", 15))
-		if (hasUpgrade("p", 16)) gain = gain.times(upgradeEffect("p", 16))
-		if (tmp["p"].buyables["11"].effect.first > 1) gain = gain.times(tmp["p"].buyables["11"].effect.first)
-		if (tmp["p"].buyables["12"].effect.first > 1) gain = gain.times(tmp["p"].buyables["12"].effect.first)
-		if (hasUpgrade("f", 11)) gain = gain.times(upgradeEffect("f", 11))
-		if (hasUpgrade("f", 12)) gain = gain.times(upgradeEffect("f", 12))
-		if (hasUpgrade("f", 13)) gain = gain.times(upgradeEffect("f", 13))
-		if (hasUpgrade("f", 14)) gain = gain.times(upgradeEffect("f", 14))
-		return gain
+	let gain = new Decimal(1)
+	if (hasUpgrade("p", 11)) gain = gain.times(upgradeEffect("p", 11))
+	if (hasUpgrade("p", 12)) gain = gain.times(upgradeEffect("p", 12))
+	if (hasUpgrade("p", 14)) gain = gain.times(upgradeEffect("p", 14))
+	if (hasUpgrade("p", 15)) gain = gain.times(upgradeEffect("p", 15))
+	if (hasUpgrade("p", 16)) gain = gain.times(upgradeEffect("p", 16))
+	if (tmp["p"].buyables["11"].effect.first > 1) gain = gain.times(tmp["p"].buyables["11"].effect.first)
+	if (tmp["p"].buyables["12"].effect.first > 1) gain = gain.times(tmp["p"].buyables["12"].effect.first)
+	if (hasUpgrade("f", 11)) gain = gain.times(upgradeEffect("f", 11))
+	if (hasUpgrade("f", 12)) gain = gain.times(upgradeEffect("f", 12))
+	if (hasUpgrade("f", 13)) gain = gain.times(upgradeEffect("f", 13))
+	if (hasUpgrade("f", 14)) gain = gain.times(upgradeEffect("f", 14))
+	return gain
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
